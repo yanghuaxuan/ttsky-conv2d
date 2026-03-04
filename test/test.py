@@ -13,9 +13,6 @@ class Conv2dModel():
     def __init__(self, dut, buf):
         self._q = queue.SimpleQueue()
         self._linewidth_px_p = dut.linewidth_px_p.value
-
-        # Initialize _buf with NaN so that we can
-        # detect when the output should be not an X in simulation
         self._buf = buf
 
     def _update_window(self, inp):
