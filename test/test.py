@@ -80,9 +80,19 @@ async def test_line_buffer_conv3x16(dut):
 
     for i in inps:
         model.enqueue_inp(i)
+        # expected = model.line_convolve()
+        dut.ui_in.value = int(i)
         await FallingEdge(dut.clk)
 
+    dut.ui_in.value = 0
+
+    await RisingEdge(dut.clk)
+    expected = model.line_convolve()
     for _ in range(linewidth_px_p):
+      # Concatenate 8-bit dedicated output and 6-bit GPIO output into 14-bit value
+      dedicated_out = int(dut.uo_out.value) & 0xFF  # 8-bit from uo_out
+      gpio_out = int(dut.uio_out.value) & 0x3F     # 6-bit from uio_out[5:0]
+      full_output = (gpio_out << 8) | dedicated_out  # GPIO in upper 6 bits, dedicated in lower 8 bits
       await RisingEdge(dut.clk)
-      expected = model.line_convolve()
-      print(f"Expected: {expected}, Got: {dut.data_o.value}")
+      
+      print(f"Expected: {expected}, Full Output: {full_output:014b} (int(full_output)={full_output})")
