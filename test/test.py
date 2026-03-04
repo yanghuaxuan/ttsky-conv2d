@@ -10,13 +10,13 @@ import queue
 
 # 3x3 convolution with kernel of ones model
 class Conv2dModel():
-    def __init__(self, dut):
+    def __init__(self, dut, buf):
         self._q = queue.SimpleQueue()
         self._linewidth_px_p = dut.linewidth_px_p.value
 
         # Initialize _buf with NaN so that we can
         # detect when the output should be not an X in simulation
-        self._buf = np.zeros((3,self._linewidth_px_p))/0
+        self._buf = buf
 
     def _update_window(self, inp):
         tmp = self._buf.flatten()
@@ -36,6 +36,7 @@ class Conv2dModel():
         self._q.put(data_i)
 
     def line_convolve(self):
+        # print(f"Current buffer state before convolution:\n{self._buf}")
         self._update_window(self._q.get())
         expected = self._apply_kernel(self._buf)
         return expected
@@ -58,10 +59,11 @@ async def test_line_buffer_conv3x16(dut):
     cocotb.start_soon(clock.start())
 
     linewidth_px_p = dut.linewidth_px_p.value.to_unsigned()
-    model = Conv2dModel(dut)
 
-    # Create 3x16 "image" as 0..47
+   # Create 3x16 "image" as 0..47
     inps = np.arange(linewidth_px_p * 3, dtype=int)
+
+    model = Conv2dModel(dut, inps.reshape(3, linewidth_px_p))
 
     # Reset
     dut._log.info("Reset")
@@ -79,17 +81,20 @@ async def test_line_buffer_conv3x16(dut):
     set_valid(dut, 1)
 
     for i in inps:
-        model.enqueue_inp(i)
-        # expected = model.line_convolve()
+        # enqueue dummy input as well
+        model.enqueue_inp(0)
         dut.ui_in.value = int(i)
         await FallingEdge(dut.clk)
 
     dut.ui_in.value = 0
 
+
     await RisingEdge(dut.clk)
-    expected = model.line_convolve()
+    await RisingEdge(dut.clk)
     for _ in range(linewidth_px_p):
       # Concatenate 8-bit dedicated output and 6-bit GPIO output into 14-bit value
+      expected = model.line_convolve()
+      model.enqueue_inp(0)  # Enqueue dummy input for next cycle
       dedicated_out = int(dut.uo_out.value) & 0xFF  # 8-bit from uo_out
       gpio_out = int(dut.uio_out.value) & 0x3F     # 6-bit from uio_out[5:0]
       full_output = (gpio_out << 8) | dedicated_out  # GPIO in upper 6 bits, dedicated in lower 8 bits
