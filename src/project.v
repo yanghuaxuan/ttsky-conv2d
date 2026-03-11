@@ -27,11 +27,16 @@ module tt_um_yanghuaxuan_conv2d (
   assign uio_oe = 8'b10111111; // Enable output for valid_o and ready_o
 
   // to output, most significant 2 bits of uio_out is reserved for valid_o and valid_i signal
-  // bit 7:0 -> uo_out[7:0]
-  // bit 13:8 -> uio_out[5:0]
+  // bit 9:2 -> uo_out[9:2]
+  // bit 15:10 -> uio_out[15:10]
+
+  // GPIO[5:0] <- conv2d_data_o[15:10]
+  // GPIO[6]   <- valid_i
+  // GPIO[7]   <- valid_o
+
   assign uo_out = conv2d_data_o[7:0];
   assign uio_out[6] = 1'b0; // unused
-  assign uio_out[5:0] = conv2d_data_o[13:8];
+  assign uio_out[5:0] = conv2d_data_o[15:10];
 
   // 3x3 convolution with kernel of all ones, stride 1, and no padding
   conv2d #(
