@@ -34,7 +34,7 @@ module tt_um_yanghuaxuan_conv2d (
   // GPIO[6]   <- valid_i
   // GPIO[7]   <- valid_o
 
-  assign uo_out = conv2d_data_o[7:0];
+  assign uo_out = conv2d_data_o[9:2];
   assign uio_out[6] = 1'b0; // unused
   assign uio_out[5:0] = conv2d_data_o[15:10];
 

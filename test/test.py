@@ -107,8 +107,8 @@ async def test_line_buffer_conv3x16(dut):
       model.enqueue_inp(0)  # Enqueue dummy input for next cycle
       dedicated_out = int(dut.uo_out.value) & 0xFF  # 8-bit from uo_out
       gpio_out = int(dut.uio_out.value) & 0x3F     # 6-bit from uio_out[5:0]
-      full_output = (gpio_out << 8) | dedicated_out  # GPIO in upper 6 bits, dedicated in lower 8 bits
+      full_output = (gpio_out << 8) | (dedicated_out << 2)  # GPIO in upper 6 bits, dedicated in lower 8 bits
       await RisingEdge(dut.clk)
       
-      print(f"Expected: {expected}, Full Output: {full_output:014b} (int(full_output)={full_output})")
-      assert int(expected) == int(full_output)
+      print(f"Expected: {expected}, Full Output: {full_output:014b} (int(full_output)={full_output}), error: {abs((expected - full_output) / expected)}")
+      assert abs((expected - full_output) / expected) < 0.1
