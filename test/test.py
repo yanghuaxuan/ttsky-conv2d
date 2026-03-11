@@ -7,6 +7,17 @@ from cocotb.triggers import ClockCycles, FallingEdge, RisingEdge
 import numpy as np
 import queue
 
+# Helper to drive valid_i on uio_in[6]
+def set_valid(dut, val: int) -> None:
+    cur = int(dut.uio_in.value)
+    if val:
+        cur |= (1 << 6)
+    else:
+        cur &= ~(1 << 6)
+    dut.uio_in.value = cur
+
+def is_valid_o(dut, val) -> bool:
+    return (val) & 0x1 == 1
 
 # 3x3 convolution with kernel of ones model
 class Conv2dModel():
@@ -73,6 +84,7 @@ async def test_line_buffer_conv3x16(dut):
 
     dut._log.info("Streaming 3x16 image into conv2d")
 
+    await RisingEdge(dut.rst_n)
 
     # Stream the 3x16 pixels, one per cycle, with valid_i asserted
     set_valid(dut, 1)
@@ -83,11 +95,12 @@ async def test_line_buffer_conv3x16(dut):
         dut.ui_in.value = int(i)
         await FallingEdge(dut.clk)
 
+    # keep window buffer running to drain output
     dut.ui_in.value = 0
 
+    await RisingEdge(dut.clk)
+    await RisingEdge(dut.clk)
 
-    await RisingEdge(dut.clk)
-    await RisingEdge(dut.clk)
     for _ in range(linewidth_px_p):
       # Concatenate 8-bit dedicated output and 6-bit GPIO output into 14-bit value
       expected = model.line_convolve()
@@ -98,3 +111,4 @@ async def test_line_buffer_conv3x16(dut):
       await RisingEdge(dut.clk)
       
       print(f"Expected: {expected}, Full Output: {full_output:014b} (int(full_output)={full_output})")
+      assert int(expected) == int(full_output)
