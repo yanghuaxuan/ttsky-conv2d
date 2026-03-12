@@ -58,4 +58,10 @@ module tt_um_yanghuaxuan_conv2d (
     /* verilator lint_on PINCONNECTEMPTY */
   );
 
+  wire _unused_ok = 1'b0 && &{1'b0,
+                    uio_in[7],
+                    uio_in[5:0],
+                    conv2d_data_o[2:0]
+                    1'b0};
+
 endmodule
