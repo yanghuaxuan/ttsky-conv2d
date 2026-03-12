@@ -55,8 +55,11 @@ module conv2d
      delay_buf_inst0
        (
         // Outputs
+
+        /* verilator lint_off PINCONNECTEMPTY */
         .ready_o                        (),
         .valid_o                        (),
+        /* verilator lint_on PINCONNECTEMPTY */
         .data_o                         (delaybuf0_out_w),
         // Inputs
         .clk_i                          (clk_i),
@@ -84,8 +87,10 @@ module conv2d
      delay_buf_inst1
        (
         // Outputs
+        /* verilator lint_off PINCONNECTEMPTY */
         .ready_o                        (),
         .valid_o                        (),
+        /* verilator lint_on PINCONNECTEMPTY */
         .data_o                         (delaybuf1_out_w),
         // Inputs
         .clk_i                          (clk_i),
