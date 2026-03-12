@@ -5,7 +5,7 @@
    that can be driven / tested by the cocotb test.py.
 */
 module tb #(
-  parameter linewidth_px_p = 8
+  parameter linewidth_px_p = 6
   ) ();
 
   // Dump the signals to a FST file. You can view it with gtkwave or surfer.
