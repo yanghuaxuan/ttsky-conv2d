@@ -5,7 +5,7 @@
    that can be driven / tested by the cocotb test.py.
 */
 module tb #(
-  parameter linewidth_px_p = 16
+  parameter linewidth_px_p = 8
   ) ();
 
   // Dump the signals to a FST file. You can view it with gtkwave or surfer.
@@ -30,7 +30,8 @@ module tb #(
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_yanghuaxuan_conv2d user_project (
+  tt_um_yanghuaxuan_conv2d #(.linewidth_px_p(linewidth_px_p))
+  user_project   (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST

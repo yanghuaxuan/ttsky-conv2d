@@ -59,9 +59,7 @@ def set_valid(dut, val: int) -> None:
     dut.uio_in.value = cur
 
 @cocotb.test()
-async def test_line_buffer_conv3x16(dut):
-    dut._log.info("Start 3x3 conv2d line-buffer test on 3x16 image")
-
+async def test_line_buffer_conv(dut):
     # Clock: 10 us period (100 kHz)
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
@@ -82,7 +80,7 @@ async def test_line_buffer_conv3x16(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
 
-    dut._log.info("Streaming 3x16 image into conv2d")
+    dut._log.info(f"Streaming 3x{linewidth_px_p} image into conv2d")
 
     await RisingEdge(dut.rst_n)
 

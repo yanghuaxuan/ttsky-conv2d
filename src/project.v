@@ -5,7 +5,9 @@
 
 `default_nettype none
 
-module tt_um_yanghuaxuan_conv2d (
+module tt_um_yanghuaxuan_conv2d #(
+  parameter linewidth_px_p = 16
+)(
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -42,7 +44,7 @@ module tt_um_yanghuaxuan_conv2d (
 
   // 3x3 convolution with kernel of all ones, stride 1, and no padding
   conv2d #(
-    .linewidth_px_p(16),
+    .linewidth_px_p(linewidth_px_p),
     .width_p(8)
   ) conv2d_inst
   (
