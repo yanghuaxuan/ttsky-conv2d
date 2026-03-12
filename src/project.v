@@ -51,6 +51,9 @@ module tt_um_yanghuaxuan_conv2d (
     .valid_i(valid_i),
     .valid_o(valid_o),
     .ready_i(1'b1),
+    /* verilator lint_off PINCONNECTEMPTY */
+    .ready_o()
+    /* verilator lint_on PINCONNECTEMPTY */
   );
 
 endmodule
