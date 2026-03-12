@@ -18,6 +18,9 @@ project:
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
     - "project.v"
+    - "delaybuffer.sv"
+    - "ram_1r1w_sync.sv"
+    - "con2d.sv"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
@@ -33,22 +36,22 @@ pinout:
   ui[7]: "data_i[7]"  # Example: "clk"
 
   # Outputs
-  uo[0]: "conv2d_data_o[0]"  # Example: "data_o[0]"
-  uo[1]: "conv2d_data_o[1]"  # Example: "data_o[1]"
-  uo[2]: "conv2d_data_o[2]"  # Example: "data_o[2]"
-  uo[3]: "conv2d_data_o[3]"  # Example: "data_o[3]"
-  uo[4]: "conv2d_data_o[4]"  # Example: "data_o[4]"
-  uo[5]: "conv2d_data_o[5]"  # Example: "data_o[5]"
-  uo[6]: "conv2d_data_o[6]"  # Example: "data_o[6]"
-  uo[7]: "conv2d_data_o[7]"  # Example: "data_o[7]"
+  uo[0]: "conv2d_data_o[2]"  # Example: "data_o[0]"
+  uo[1]: "conv2d_data_o[3]"  # Example: "data_o[1]"
+  uo[2]: "conv2d_data_o[4]"  # Example: "data_o[2]"
+  uo[3]: "conv2d_data_o[5]"  # Example: "data_o[3]"
+  uo[4]: "conv2d_data_o[6]"  # Example: "data_o[4]"
+  uo[5]: "conv2d_data_o[7]"  # Example: "data_o[5]"
+  uo[6]: "conv2d_data_o[8]"  # Example: "data_o[6]"
+  uo[7]: "conv2d_data_o[9]"  # Example: "data_o[7]"
 
   # Bidirectional pins
-  uio[0]: "conv2d_data_o[8]"
-  uio[1]: "conv2d_data_o[9]"
-  uio[2]: "conv2d_data_o[10]"
-  uio[3]: "conv2d_data_o[11]"
-  uio[4]: "conv2d_data_o[12]"
-  uio[5]: "conv2d_data_o[13]"
+  uio[0]: "conv2d_data_o[10]"
+  uio[1]: "conv2d_data_o[11]"
+  uio[2]: "conv2d_data_o[12]"
+  uio[3]: "conv2d_data_o[13]"
+  uio[4]: "conv2d_data_o[14]"
+  uio[5]: "conv2d_data_o[15]"
   uio[6]: "valid_i"
   uio[7]: "valid_o"
 
