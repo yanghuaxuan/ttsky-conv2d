@@ -21,9 +21,9 @@ def is_valid_o(dut, val) -> bool:
 
 # 3x3 convolution with kernel of ones model
 class Conv2dModel():
-    def __init__(self, dut, buf):
+    def __init__(self, dut, buf, linewidth_px_p):
         self._q = queue.SimpleQueue()
-        self._linewidth_px_p = dut.linewidth_px_p.value
+        self._linewidth_px_p = linewidth_px_p
         self._buf = buf
 
     def _update_window(self, inp):
@@ -64,12 +64,12 @@ async def test_line_buffer_conv(dut):
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
-    linewidth_px_p = dut.linewidth_px_p.value.to_unsigned()
+    linewidth_px_p = 6
 
    # Create 3x16 "image" as 0..47
     inps = np.arange(linewidth_px_p * 3, dtype=int)
 
-    model = Conv2dModel(dut, inps.reshape(3, linewidth_px_p))
+    model = Conv2dModel(dut, inps.reshape(3, linewidth_px_p), linewidth_px_p)
 
     # Reset
     dut._log.info("Reset")

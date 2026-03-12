@@ -4,9 +4,7 @@
 /* This testbench just instantiates the module and makes some convenient wires
    that can be driven / tested by the cocotb test.py.
 */
-module tb #(
-  parameter linewidth_px_p = 6
-  ) ();
+module tb ();
 
   // Dump the signals to a FST file. You can view it with gtkwave or surfer.
   initial begin
@@ -30,7 +28,7 @@ module tb #(
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_yanghuaxuan_conv2d #(.linewidth_px_p(linewidth_px_p))
+  tt_um_yanghuaxuan_conv2d #()
   user_project   (
 
       // Include power ports for the Gate Level test:
