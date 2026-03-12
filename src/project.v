@@ -51,7 +51,6 @@ module tt_um_yanghuaxuan_conv2d (
     .valid_i(valid_i),
     .valid_o(valid_o),
     .ready_i(1'b1),
-    .ready_o()
   );
 
 endmodule
