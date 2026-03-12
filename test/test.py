@@ -95,11 +95,13 @@ async def test_line_buffer_conv3x16(dut):
         dut.ui_in.value = int(i)
         await FallingEdge(dut.clk)
 
-    # keep window buffer running to drain output
+    # set inputs to zero, but keep window buffer running to drain output
     dut.ui_in.value = 0
 
     await RisingEdge(dut.clk)
     await RisingEdge(dut.clk)
+
+    print(f"Expected Buffer is {inps.reshape((3, linewidth_px_p))}")
 
     for _ in range(linewidth_px_p):
       # Concatenate 8-bit dedicated output and 6-bit GPIO output into 14-bit value
