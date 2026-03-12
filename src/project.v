@@ -6,7 +6,7 @@
 `default_nettype none
 
 module tt_um_yanghuaxuan_conv2d #(
-  parameter linewidth_px_p = 8
+  parameter linewidth_px_p = 6
 )(
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
